@@ -13,37 +13,27 @@ connect.then((db) => {
     console.log('Connected correctly to server');
 
     // Now, we create new dish with the dishSchema that we've beed created in "dishes.js"
-    var newDish = Dishes({
+    // which will return a promise.
+    Dishes.create({
         name: 'Uthappizza',
         description: 'test'
+    })
+    .then((dish) => {
+        console.log(dish + "\n\nTAN is here\n");
+
+        return Dishes.find({});
+    })
+    .then((dishes) => {
+        console.log(dishes);
+
+        return Dishes.remove({});
+    })
+    .then(() => {
+
+        return mongoose.connection.close();
+    })
+    .catch((err) => {
+        
+        console.log(err);
     });
-
-    // function createDish(dishName, dishDescription) {
-    //     return Dishes({
-    //         name: dishName,
-    //         description: dishDescription
-    //     });
-    // };
-    // newDish = createDish('Uthappizza', 'test');
-
-    // // The save() method will cause the dish value to be saved and return a promise
-    newDish.save()
-        .then((dish) => {
-            console.log(dish);
-
-            return Dishes.find({});
-        })
-        .then((dishes) => {
-            console.log(dishes);
-
-            return Dishes.remove({});
-        })
-        .then(() => {
-
-            return mongoose.connection.close();
-        })
-        .catch((err) => {
-            
-            console.log(err);
-        });
 });
