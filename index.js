@@ -21,19 +21,33 @@ connect.then((db) => {
     .then((dish) => {
         console.log(dish + "\n\nTAN is here\n");
 
-        return Dishes.find({});
+        return Dishes.findByIdAndUpdate(dish._id, {
+            $set: { description: 'Updated test' }
+        }, {
+            new: true
+        })
+        .exec();
     })
-    .then((dishes) => {
-        console.log(dishes);
+    .then((dish) => {
+        console.log(dish);
 
-        return Dishes.remove({});
+        dish.comments.push({
+            rating: 5,
+            comment: 'I\'m getting a sinking feeling!',
+            author: 'Leonardo di Carpaccio'
+        });
+
+        return dish.save();
+    })
+    .then((dish) => {
+        console.log(dish);
+        
+        return db.collection('dishes').drop();
     })
     .then(() => {
-
-        return mongoose.connection.close();
+        return db.close();
     })
     .catch((err) => {
-        
         console.log(err);
     });
 });

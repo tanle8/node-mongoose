@@ -1,6 +1,26 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
+// Create Sub-documents to a Document
+var commentSchema = new Schema({
+    rating: {
+        type: Number,
+        min: 1,
+        max: 5,
+        required: true
+    },
+    comment: {
+        type: String,
+        required: true
+    },
+    author: {
+        type: String,
+        required: true
+    }
+},{
+    timestamps: true
+});
+
 // First, we create the schema we want here
 const dishSchema = new Schema({
     name: {
@@ -11,7 +31,8 @@ const dishSchema = new Schema({
     description: {
         type: String,
         required: true
-    }
+    },
+    comments: [ commentSchema ]
 },{
     timestamps: true
 });
